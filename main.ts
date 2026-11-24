@@ -22,6 +22,15 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const LINE =
   "Press B4 \u2014 I've held your favorite at eye level all day. Exact change only... and if you come back tomorrow, I'll jam the coil on purpose, just to keep you here.";
 
+// Gate limit: /output/entry.txt must be 1–200 characters. Keep the limit
+// as a named constant so a future line edit fails loudly instead of
+// silently shipping an over-long entry.
+const MAX_CHARS = 200;
+
+if (LINE.length === 0 || LINE.length > MAX_CHARS) {
+  throw new Error(`entry line must be 1–${MAX_CHARS} characters, got ${LINE.length}`);
+}
+
 const dest = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
 // In the grader /output is a mount point: create it when it is missing,
